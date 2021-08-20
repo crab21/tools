@@ -1,0 +1,8 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hang-ubuntu
+spec:
+  steps:
+    - name: hang-ubuntu
+      image: ubuntu 

@@ -1,0 +1,93 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: pipeline-when-1627630692
+  namespace: default
+spec:
+  serviceAccountName: default 
+  pipelineSpec:
+    tasks:
+    - name: task-a
+      taskSpec:
+        results:
+          - name: go-to-task-c
+          - name: go-to-task-d
+          - name: go-to-task-e
+        steps:
+        - name: step-1
+          image: alpine:3.11
+          script: |
+            #!/usr/bin/env sh
+            echo "step1"
+            printf no | tee $(results.go-to-task-c.path)
+        - name: step-2
+          image: alpine:3.11
+          script: |
+            #!/usr/bin/env sh
+            echo "step2"
+            printf yes | tee $(results.go-to-task-d.path)
+        - name: step-3
+          image: alpine:3.11
+          script: |
+            #!/usr/bin/env sh
+            echo $(results.go-to-task-e.path)
+            printf yes | tee $(results.go-to-task-e.path)
+    - name: task-b
+      params:
+        - name: foo
+          value: "$(tasks.task-a.results.go-to-task-c)"
+      taskSpec:
+        params:
+        - name: foo
+        steps:
+        - name: step-1
+          image: alpine:3.11
+          script: |
+            #!/usr/bin/env sh
+            echo $(params.foo)
+    - name: task-c
+      when:
+        - input: "$(tasks.task-a.results.go-to-task-c)"
+          operator: in
+          values: ["yes"]
+      taskSpec:
+        steps:
+        - name: step-1
+          image: alpine:3.11
+          command: ["echo","this is task-c"]
+    - name: task-d
+      when:
+        - input: "$(tasks.task-a.results.go-to-task-d)"
+          operator: in
+          values: ["yes"]
+      taskSpec:
+        steps:
+        - name: step-1
+          image: alpine:3.11
+          command: ["echo","this is task-d"]
+    - name: task-e
+      when:
+        - input: "$(tasks.task-a.results.go-to-task-e)"
+          operator: in
+          values: ["yes"]
+      taskSpec:
+        steps:
+        - name: step-1
+          image: alpine:3.11
+          command: ["echo","this is task-e"]
+    - name: task-f
+      runAfter:
+        - task-c
+      taskSpec:
+        steps:
+        - name: step-1
+          image: alpine:3.11
+          command: ["echo","this is task-f"]
+    - name: task-g
+      runAfter:
+        - task-f
+      taskSpec:
+        steps:
+        - name: step-1
+          image: alpine:3.11
+          command: ["echo","this is task-g"]

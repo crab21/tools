@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: expr-1627714007
+spec:
+  serviceAccountName: default
+  taskSpec:
+    steps:
+      - name: expr
+        image: imrcrab/expr:v1.0.1
+

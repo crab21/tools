@@ -1,0 +1,62 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  labels:
+    executionID: executionID
+    pipelineID: pipelineID
+    runID: run-executionid-0
+    info: "true"
+  name: run-executionid-1628060826-no-workspace-both
+  annotations: 
+    tekton.dev/ready: "true"
+spec:
+  serviceAccountName: default 
+  pipelineSpec:
+    tasks:
+    - name: aa
+      taskSpec:
+        results:
+          - name: task1-output1
+        steps:
+        - name: stgstep01
+          image: zshusers/zsh:4.3.15
+          script: |
+            #!/usr/bin/env zsh
+            printf yes | tee $(results.task1-output1.path)
+
+    - name: activatestageid2
+      runAfter: ["aa"]
+      taskSpec:
+        steps:
+        - name: stgstep02
+          image: zshusers/zsh:4.3.15
+          script: |
+            #!/usr/bin/env zsh
+            echo test
+            # ff=$(cat /tekton/source/go.txt)
+            # if [ "$ff" == "good" ]
+            # then 
+            #   echo "good"
+            #   # exit 0
+            # else
+            #   echo "not good"
+            #   # exit 0
+            # fi
+            echo $(tasks.aa.results.task1-output1)
+            sleep 3000s
+    - name: activatestageid3
+      when:
+        - input: "$(tasks.aa.results.task1-output1)"
+          operator: in
+          values: ["yes"]
+      runAfter: ["aa"]
+      taskSpec:
+        steps:
+        - name: stgstep02
+          image: zshusers/zsh:4.3.15
+
+   
+  # workspaces:
+  # - name: shared-workspace
+  #   persistentVolumeClaim:
+  #     claimName: mmpvc

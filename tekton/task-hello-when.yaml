@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello-when
+spec:
+  steps:
+    - name: hello-when
+      image: ubuntu
+      command:
+        - echo
+      args:
+        - "Hello World when expersission!"

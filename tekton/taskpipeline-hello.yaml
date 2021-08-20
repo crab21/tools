@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: tutorial-pipeline-when
+spec:
+  tasks:
+    - name: test-pipeline-1
+      taskRef:
+        name: hello
+    - name: test-pipeline-2
+      taskRef:
+        name: hello
+  finally:
+      - name: notify-build-failure # executed only when build task fails and notifications are enabled
+        when:
+          - input: $(tasks.status)
+            operator: in
+            values: ["Succeeded"]
+        taskRef:
+          name: hello-when

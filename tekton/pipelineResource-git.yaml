@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: gogo-git
+  namespace: default
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://github.com/crab21/go-source.git 
+    - name: revision
+      value: master

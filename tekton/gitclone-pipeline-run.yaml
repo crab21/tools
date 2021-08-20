@@ -1,0 +1,143 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  labels:
+    executionID: executionID
+    pipelineID: pipelineID
+    runID: run-executionid-0
+    gogoowang: "true"
+  name: expr-1629288581-trim-test
+spec:
+  serviceAccountName: default 
+  pipelineSpec:
+    tasks:
+    - name: activatestageid1
+      taskSpec:
+        results:
+          - name: 448a-9320
+        steps:
+        - env:
+          image: zshusers/zsh:4.3.15
+          script: mkdir -p /workspace/source &&  echo "good" > /workspace/source/go.txt && cat /workspace/source/go.txt      
+            #!/usr/bin/env zsh 
+          name: stgstep01
+          workingDir: /workspace      
+        - name: expr
+          image: imrcrab/expr:v1.0.12
+          script: |
+            ls /
+            ls /workspace
+            chmod +x /expr
+            cat /workspace/exprr
+            echo "Deploy PROD" > /workspace/exprr
+            /expr --exprPath '#{option} == Deploy Gradle' --uniqueID 448a-9320 --tektonPath /tekton/results/ --chooseValuePath /workspace/exprr
+          workingDir: /workspace
+        - name: stgstep0333
+          image: zshusers/zsh:4.3.15
+          script: |
+            #!/usr/bin/env zsh
+            printf true | tee $(results.448a-9320.path)
+            echo "ls -all /tekton"
+            ls -all /tekton
+
+            echo "ls -all /tekton/results"
+            ls -all /tekton/results
+
+            echo "ls -all /tekton"
+            ls -all /tekton
+
+            echo "ls -all /tekton/home"
+            ls -all /tekton/home
+
+            echo "ls -all /"
+            ls -all /
+
+            echo "ls -all /workspace/results"
+            ls -all /workspace/results
+
+            echo "ls -all /workspace"
+            ls -all /workspace
+            ls -all .
+
+        workspaces:
+        - mountPath: /workspace
+          name: shared-workspace
+      workspaces:
+      - name: shared-workspace
+        workspace: shared-workspace
+    - name: activatestageid22
+      runAfter: ["activatestageid1"]
+      taskSpec:
+        results:
+          - name: 448a-9320sssss
+        steps:
+        - env:
+          image: imrcrab/nop:0.5
+          name: stgstep02
+          script: |
+            printf true | tee $(results.448a-9320sssss.path)
+            ls -all /tekton/results
+          workingDir: /workspace
+        workspaces:
+        - mountPath: /workspace
+          name: shared-workspace
+      workspaces:
+      - name: shared-workspace
+        workspace: shared-workspace
+    - name: activatestageid2
+      params:
+        - name: 448a-93201
+          value: "$(tasks.activatestageid1.results.448a-9320)"
+      runAfter: ["activatestageid1"]
+      taskSpec:
+        params:
+          - name: 448a-93201
+            type: string
+        results:
+          - name: "448a-932011"
+        steps:
+        - env:
+          image: zshusers/zsh:4.3.15
+          script: |
+            #!/usr/bin/env zsh
+            ls -all /tekton/results
+            echo $(params.448a-9321)
+            cat /workspace/source/go.txt
+            echo true > /tekton/results/448a-932011
+            printf `cat /tekton/results/448a-932011` | tee $(results.448a-932011.path)
+          name: stgstep02
+          workingDir: /workspace
+        workspaces:
+        - mountPath: /workspace
+          name: shared-workspace
+      workspaces:
+      - name: shared-workspace
+        workspace: shared-workspace
+    - name: activatestageid3
+      when:
+        - input: $(tasks.activatestageid2.results.448a-932011 || tasks.activatestageid1.results.448a-9320)
+          operator: in
+          values: 
+            - 'true'
+            - 'yes'
+      taskSpec:
+        steps:
+        - env:
+          image: zshusers/zsh:4.3.15
+          script: |
+            #!/usr/bin/env zsh
+            cat /workspace/source/go.txt
+          name: stgstep02
+          workingDir: /workspace
+        workspaces:
+        - mountPath: /workspace
+          name: shared-workspace
+      workspaces:
+      - name: shared-workspace
+        workspace: shared-workspace
+    workspaces:
+    - name: shared-workspace
+  workspaces:
+  - name: shared-workspace
+    persistentVolumeClaim:
+      claimName: mmpvc

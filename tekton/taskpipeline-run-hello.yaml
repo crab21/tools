@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: tutorial-pipeline-run-6
+spec:
+  serviceAccountName: default 
+  pipelineRef:
+    name: tutorial-pipeline-when  
+  resources:
+    - name: source-repo
+      resourceRef:
+        name: gogo-git
