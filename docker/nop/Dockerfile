@@ -17,6 +17,8 @@ RUN  sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositorie
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
 FROM busybox
-WORKDIR /
+WORKDIR /ko-app/
 COPY --from=builder /workspace/nop .
-CMD [ "/nop" ]
+USER root
+
+ENTRYPOINT ["/ko-app/nop"]

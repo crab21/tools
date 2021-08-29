@@ -6,7 +6,7 @@ metadata:
     pipelineID: pipelineID
     runID: run-executionid-0
     gogoowang: "true"
-  name: expr-1629711509-trim-test
+  name: expr-1629706432-trim-test
 spec:
   serviceAccountName: default 
   pipelineSpec:
@@ -18,11 +18,47 @@ spec:
         steps:
         - env:
           image: zshusers/zsh:4.3.15
-          script: |      
+          script: mkdir -p /workspace/source &&  echo "good" > /workspace/source/go.txt && cat /workspace/source/go.txt      
             #!/usr/bin/env zsh 
-            printf true | tee $(results.448a-9320.path)
           name: stgstep01
           workingDir: /workspace      
+        - name: expr
+          image: imrcrab/expr:v1.0.12
+          script: |
+            ls /
+            ls /workspace
+            chmod +x /expr
+            cat /workspace/exprr
+            echo "Deploy PROD" > /workspace/exprr
+            /expr --exprPath '#{option} == Deploy Gradle' --uniqueID 448a-9320 --tektonPath /tekton/results/ --chooseValuePath /workspace/exprr
+          workingDir: /workspace
+        - name: stgstep0333
+          image: zshusers/zsh:4.3.15
+          script: |
+            #!/usr/bin/env zsh
+            printf true | tee $(results.448a-9320.path)
+            echo "ls -all /tekton"
+            ls -all /tekton
+
+            echo "ls -all /tekton/results"
+            ls -all /tekton/results
+
+            echo "ls -all /tekton"
+            ls -all /tekton
+
+            echo "ls -all /tekton/home"
+            ls -all /tekton/home
+
+            echo "ls -all /"
+            ls -all /
+
+            echo "ls -all /workspace/results"
+            ls -all /workspace/results
+
+            echo "ls -all /workspace"
+            ls -all /workspace
+            ls -all .
+
         workspaces:
         - mountPath: /workspace
           name: shared-workspace
@@ -36,26 +72,10 @@ spec:
           - name: 448a-9320sssss
         steps:
         - env:
-          image: zshusers/zsh:4.3.15
+          image: imrcrab/nop:0.5
           name: stgstep02
           script: |
             printf true | tee $(results.448a-9320sssss.path)
-            ls -all /tekton/results
-          workingDir: /workspace
-        workspaces:
-        - mountPath: /workspace
-          name: shared-workspace
-      workspaces:
-      - name: shared-workspace
-        workspace: shared-workspace
-    - name: activatestageid2222middle
-      runAfter: ["activatestageid22"]
-      taskSpec:
-        steps:
-        - env:
-          image: zshusers/zsh:4.3.15
-          name: stgstep02middle
-          script: |
             ls -all /tekton/results
           workingDir: /workspace
         workspaces:
