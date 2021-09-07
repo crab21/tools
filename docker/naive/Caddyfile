@@ -1,0 +1,24 @@
+:443, fqq.imrcrab.com
+{
+	tls imrcrab@163.com {
+		protocols tls1.2 tls1.3
+		ciphers TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 TLS_RSA_WITH_AES_128_GCM_SHA256
+	}
+
+	header {
+		Strict-Transport-Security "max-age=15768000; preload"
+		X-XSS-Protection "1; mode=block"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+	}
+
+	route {
+		forward_proxy {
+			basic_auth admin QTl75t5CyBbNzsI0e4sCtJjBEYm7gL3zNuVjrgX9gpRllvRHsTF3BfBwfPGNCSERveTrHpkcbgEYFxd32M42zlnQ6vV8KL0e0um
+			hide_ip
+			hide_via
+			probe_resistance
+		}
+		file_server { root /usr/local/bin/naivecaddy/wwwhtml }
+	}
+}
