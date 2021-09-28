@@ -41,5 +41,9 @@ docker run -it --restart=always --name naive93v0.0.2 -v /root/Caddyfile:/koo/Cad
 echo "请修改 /root/Caddyfile 文件中的域名，并重启docker镜像：
     docker restart naive93v0.0.2
     
+
+    默认用户名：admin
+    默认密码：QTl75t5CyBbNzsI0e4sCtJjBEYm7gL3zNuVjrgX9gpRllvRHsTF3BfBwfPGNCSERveTrHpkcbgEYFxd32M42zlnQ6vV8KL0e0um
+    
     如果要修改用户名和密码，请修改 basic_auth行后面的用户名和密码，如： basic_auth admin password"
 
