@@ -4,6 +4,7 @@
 # /root/crab/tools/docker/naive/Caddyfile 可以覆盖镜像中的 Caddyfile文件
 
 curl -fsSL https://get.docker.com -o get-docker.sh
+
 sh get-docker.sh
 
 cat > /root/Caddyfile << EOF
@@ -36,7 +37,7 @@ EOF
 sudo systemctl enable docker
 sudo systemctl start docker
 
-docker run -it --restart=always --name naive93v0.0.2 -v /root/Caddyfile:/koo/Caddyfile naive-server:v0.2
+docker run -it --restart=always --name naive93v0.0.2 -v /root/Caddyfile:/koo/Caddyfile imrcrab/naive-server:v0.2
 
 echo "请修改 /root/Caddyfile 文件中的域名，并重启docker镜像：
     docker restart naive93v0.0.2
