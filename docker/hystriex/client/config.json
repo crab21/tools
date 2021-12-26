@@ -1,0 +1,15 @@
+{
+    "server": "xxxxxx:36712", 
+    "protocol": "faketcp",
+    "up_mbps": 300,
+    "down_mbps": 300,
+    "obfs": "3ed2c0068db79490139aa1841b36a22b0ec19dc1d3c3ce14cc5e1417e7869bea",
+    "socks5": {
+      "listen": "0.0.0.0:1080",
+      "timeout": 300, 
+      "disable_udp": false
+    },
+    "server_name": "fqgg.imrcrab.com",
+    "insecure": false,
+    "resolver": "1.1.1.1:53"
+  }

@@ -3,6 +3,10 @@
 # /root/crab/tools/docker/naive/Caddyfile:/koo/Caddyfile
 # /root/crab/tools/docker/naive/Caddyfile 可以覆盖镜像中的 Caddyfile文件
 
+
+echo "1" > /proc/sys/net/ipv4/ip_forward
+sysctl -p
+
 curl -fsSL https://get.docker.com -o get-docker.sh
 
 sh get-docker.sh

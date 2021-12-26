@@ -1,0 +1,14 @@
+{
+    "listen": ":4431",
+    "cert": "/root/pem/fqgg.imrcrab.com_bundle.crt",
+    "key": "/root/pem/fqgg.imrcrab.com.key",
+    "obfs": "3ed2c0068db79490139aa1841b36a22b0ec19dc1d3c3ce14cc5e1417e7869bea",
+    "up_mbps": 300,
+    "down_mbps": 300,
+    "recv_window_conn": 15728640,
+    "recv_window_client": 67108864,
+    "max_conn_client": 40960,
+    "disable_mtu_discovery": false,
+    "ipv6_only": false,
+    "resolver": "1.1.1.1:53"
+  }
