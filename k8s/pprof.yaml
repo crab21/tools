@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pl-pprof
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: pprof
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: pprof
+    spec:
+      imagePullSecrets:
+        - name: pulse-line-prod
+      containers:
+        - name: pprof
+          image: ccr.ccs.tencentyun.com/pulse-line-prod/pprof:v1
+          ports:
+            - containerPort: 80
